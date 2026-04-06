@@ -4,6 +4,7 @@ const port = 3000;
 const mongoose = require("mongoose");
 const Mydata = require("./models/mydataSchema");
 app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs")
 
 mongoose
   .connect(
@@ -11,11 +12,15 @@ mongoose
   )
   .then(() => {
     app.get("/", (req, res) => {
-      res.sendFile("./views/login.html", { root: __dirname });
+      Mydata.find().then((data) => {
+        res.render("login", { title: "login", data: data })
+      }).catch((err) => {
+        console.log(err);
+      });
     });
 
     app.get("/home", (req, res) => {
-      res.sendFile("./views/home.html", { root: __dirname });
+      res.render("home")
     });
   })
   .catch((err) => {
