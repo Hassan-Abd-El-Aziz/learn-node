@@ -32,7 +32,12 @@ mongoose
   )
   .then(() => {
     app.get("/", (req, res) => {
-      res.render("index")
+      myCustomer.find().then((data) => {
+
+        res.render("index", { data: data })
+      }).catch((err) => {
+        console.log(err)
+      })
     });
     app.get("/user/add.html", (req, res) => {
       res.render("user/add")
